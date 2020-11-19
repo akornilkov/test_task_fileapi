@@ -1,0 +1,10 @@
+APP_NAME: FILEAPI
+LOG_LEVEL: DEBUG
+INIT_LOGGING: true
+
+DB_PG_HOST: localhost
+DB_PG_PORT: 5432
+DB_PG_USERNAME: postgres
+DB_PG_NAME: fileapi
+DB_SCHEMA: public
+DB_PG_PASSWORD: postgres
