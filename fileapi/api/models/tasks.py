@@ -9,10 +9,10 @@ class TaskModel(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    started_at = db.Column(db.DateTime)
-    finished_at = db.Column(db.DateTime)
-    expires_at = db.Column(db.DateTime)
-    status_id = db.Column(db.Integer, db.ForeignKey('statuses.id'), nullable=False, default=0)
+    started_at = db.Column(db.DateTime, nullable=True, default=None)
+    finished_at = db.Column(db.DateTime, nullable=True, default=None)
+    expires_at = db.Column(db.DateTime, nullable=True, default=None)
+    status_id = db.Column(db.Integer, db.ForeignKey('statuses.id'), nullable=False, default=1)
     files = db.relationship('FileModel', backref='tasks', lazy=True)
 
     def __repr__(self):

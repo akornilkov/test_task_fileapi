@@ -2,7 +2,7 @@ import uuid
 
 from fileapi.api.models.statuses import StatusModel
 
-from fileapi.app.db import get_objects, create_object, update_objects
+from fileapi.app.db import get_objects, create_object, update_objects, delete_objects
 
 
 def get_statuses(filter_by: dict):
@@ -27,3 +27,7 @@ def create_status(status: dict):
 def update_status(status: dict, filter_by: dict = None):
     updated_status = update_objects(StatusModel, filter_by, status)
     return updated_status
+
+
+def delete_statuses(filter_by: dict = None):
+    return delete_objects(StatusModel, filter_by)

@@ -10,7 +10,7 @@ from fileapi.app.cache import cached
 
 
 @v1_blueprint.route('/statuses', methods=['GET'])
-@cached(timeout=60)
+@cached(timeout=5)
 def get_all_statuses():
     result = statuses.get_statuses({})
     schema_multi = statuses_schema.dump(result)
@@ -29,6 +29,12 @@ def update_status(uuid):
     result = statuses.update_status(request.json, {'uuid': uuid})
     schema = status_schema.dump(result)
     return jsonify(make_public_url(schema, 'v1.get_status_by_uuid'))
+
+
+@v1_blueprint.route('/statuses/<uuid>', methods=['DELETE'])
+def delete_status(uuid):
+    statuses.delete_statuses({'uuid': uuid})
+    return '', 204
 
 
 @v1_blueprint.route('/statuses/<uuid>', methods=['GET'])

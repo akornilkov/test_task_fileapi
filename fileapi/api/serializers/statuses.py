@@ -3,11 +3,11 @@ from marshmallow import fields
 
 
 class StatusSchema(ma.Schema):
-    id = fields.Integer(attribute='id')
-    uuid = fields.String(attribute='uuid')
-    name = fields.String(attribute='name')
-    name_en = fields.String(attribute='name_en')
-    description = fields.String(attribute='description')
+    id = fields.Integer()
+    uuid = fields.String()
+    name = fields.String()
+    name_en = fields.String()
+    description = fields.String()
 
 
 # init Schema

@@ -73,7 +73,22 @@ def update_objects(model, filter_by: dict, data: dict):
                 return objects.all()
         else:
             raise Exception(f'Object {get_classname(model)} not found by'
-                                    f' filter:{filter_by.__str__()}')
+                            f' filter:{filter_by.__str__()}')
+    except Exception as e:
+        logger.exception(e)
+        raise DatabaseError(e)
+
+
+def delete_objects(model, filter_by: dict):
+    try:
+        objects = db.session.query(model).filter_by(**filter_by)
+        count = objects.delete()
+        db.session.commit()
+        if count:
+            return count
+        else:
+            raise Exception(f'Object {get_classname(model)} not found by'
+                            f' filter:{filter_by.__str__()}')
     except Exception as e:
         logger.exception(e)
         raise DatabaseError(e)
