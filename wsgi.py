@@ -1,5 +1,4 @@
-from fileapi.app.flask import create_app
-app = create_app({'migrate': True})
+from fileapi import app
 
 if __name__ == '__main__':
     app.run(debug=False)

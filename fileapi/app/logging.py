@@ -6,7 +6,7 @@ LOGGING_CONFIG = {
     'version': 1,
     'filters': {},
     'formatters': {
-        'filebeat': {
+        'console': {
             'datefmt': '%Y-%m-%d %H:%M:%S',
             '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
             'json_ensure_ascii': False,
@@ -16,7 +16,7 @@ LOGGING_CONFIG = {
         'console': {
             'level': config.LOG_LEVEL,
             'class': 'logging.StreamHandler',
-            'formatter': 'filebeat',
+            'formatter': 'console',
             'stream': 'ext://sys.stdout',
         },
     },

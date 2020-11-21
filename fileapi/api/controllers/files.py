@@ -1,4 +1,5 @@
 import uuid
+from pprint import pprint
 
 from fileapi.api.models.files import FileModel
 
@@ -23,6 +24,7 @@ def get_file_by_uuid(uuid4):
 
 
 def create_file(file: dict):
+    pprint(file)
     if not file.get('task_id', None):
         raise DatabaseError('task_id is None for file creation')
     new_file = FileModel(
@@ -31,6 +33,10 @@ def create_file(file: dict):
         size=file.get('size', ''),
         description=file.get('description', ''),
         task_id=file.get('task_id'),
+        started_at=file.get('started_at', None),
+        finished_at=file.get('finished_at', None),
+        loaded_from=file.get('url', None),
+        loaded_to=file.get('path', None),
     )
     create_object(new_file)
     return new_file

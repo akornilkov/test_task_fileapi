@@ -7,6 +7,7 @@ from fileapi.api.serializers.tasks import (
     tasks_schema,
 )
 from fileapi.app.cache import cached
+from fileapi.api.tasks.web import handle_download_files
 
 
 @v1_blueprint.route('/tasks', methods=['GET'])
@@ -19,8 +20,11 @@ def get_all_tasks():
 
 @v1_blueprint.route('/tasks', methods=['POST'])
 def create_task():
+    files = request.json.pop('files', [])
     result = tasks.create_task(request.json)
     schema = task_schema.dump(result)
+    urls = [file.get('load_from', '') for file in files]
+    handle_download_files.apply_async(args=[urls, schema.get('id')])
     return jsonify(make_public_url(schema, 'v1.get_task_by_uuid'))
 
 

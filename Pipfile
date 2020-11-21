@@ -17,6 +17,9 @@ alembic = "*"
 uuid = "*"
 marshmallow-sqlalchemy = "*"
 flask-caching = "*"
+requests = "*"
+celery = "*"
+redis = "*"
 
 [requires]
 python_version = "3.8"

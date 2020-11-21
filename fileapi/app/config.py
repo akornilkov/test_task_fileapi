@@ -27,6 +27,14 @@ class BaseConfig:
     LOG_LEVEL: str
     README_PATH = README_PATH
 
+    CELERY_BROKER_URL: str
+
+    TASK_MAX_RETRIES: int
+    TASK_DELAY: int
+
+    FILES_BASE_PATH: str
+    FILE_CHUNKS_COUNT: int
+
     DB_PG_NAME: str
     DB_SCHEMA: str
     DB_PG_USERNAME: str

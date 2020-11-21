@@ -8,3 +8,11 @@ DB_PG_USERNAME: postgres
 DB_PG_NAME: fileapi
 DB_SCHEMA: public
 DB_PG_PASSWORD: postgres
+
+TASK_MAX_RETRIES: 5
+TASK_DELAY: 10
+
+CELERY_BROKER_URL: redis://localhost:6379/0
+
+FILES_BASE_PATH: ./static/
+FILE_CHUNKS_COUNT: 10

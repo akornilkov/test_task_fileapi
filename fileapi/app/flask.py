@@ -1,12 +1,10 @@
 import uuid
-from pprint import pprint
 from typing import List
 
 import flask
 
 from fileapi.api import v1
 from . import logging
-from .config import config
 from .db import db
 from .ext.exceptions import (
     DatabaseError,
@@ -17,17 +15,20 @@ from .ext.error_handlers import (
 from .marshmallow import ma
 from .cache import cache
 from fileapi.api.models import *
+from fileapi.app.config import config
+from fileapi.api.tasks.celery import celeryApp
 
 
 def create_app(extra_config: dict = None):
     if config.INIT_LOGGING:
         logging.init_logging()
-
-    app = flask.Flask(__name__)
+    app = flask.Flask(config.APP_NAME)
     app.config.from_object(config)
+    app.config.update(CELERY_BROKER_URL='redis://localhost:6379/0', CELERY_RESULT_BACKEND='redis://localhost:6379/0')
     app.app_context().push()
     db.init_app(app)
     ma.init_app(app)
+    celeryApp.init_app(app)
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     if extra_config:
         if extra_config.pop('migrate', False):
