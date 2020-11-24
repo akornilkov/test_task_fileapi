@@ -13,6 +13,10 @@ def get_status_by_uuid(uuid4: str):
     return get_objects(StatusModel, {'uuid': uuid4}, 1)
 
 
+def get_status_by_id(status_id: int):
+    return get_objects(StatusModel, {'id': status_id}, 1)
+
+
 def create_status(status: dict):
     new_status = StatusModel(
         uuid=uuid.uuid4(),

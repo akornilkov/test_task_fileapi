@@ -1,5 +1,3 @@
-from typing import List
-
 import yaml
 import os
 from dataclasses import dataclass
@@ -33,6 +31,8 @@ class BaseConfig:
     TASK_DELAY: int
 
     FILES_BASE_PATH: str
+    UPLOAD_TO: str
+    ALLOWED_EXTENSIONS: list
     FILE_CHUNKS_COUNT: int
 
     DB_PG_NAME: str
@@ -61,6 +61,10 @@ class BaseConfig:
             port=self.DB_PG_PORT,
             db_name=self.DB_PG_NAME,
         )
+
+    @property
+    def UPLOAD_FOLDER(self):
+        return f'{self.FILES_BASE_PATH}{self.UPLOAD_TO}'
 
     @property
     def ENVIRONMENT(self):

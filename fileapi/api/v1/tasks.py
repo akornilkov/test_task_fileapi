@@ -6,6 +6,9 @@ from fileapi.api.serializers.tasks import (
     task_schema,
     tasks_schema,
 )
+from fileapi.api.serializers.statuses import (
+    status_schema,
+)
 from fileapi.app.cache import cached
 from fileapi.api.tasks.web import handle_download_files
 
@@ -28,7 +31,7 @@ def create_task():
     return jsonify(make_public_url(schema, 'v1.get_task_by_uuid'))
 
 
-@v1_blueprint.route('/statuses/<uuid>', methods=['PUT'])
+@v1_blueprint.route('/tasks/<uuid>', methods=['PUT'])
 def update_task(uuid):
     result = tasks.update_tasks(request.json, {'uuid': uuid})
     schema = task_schema.dump(result)
@@ -42,8 +45,15 @@ def delete_task(uuid):
 
 
 @v1_blueprint.route('/tasks/<uuid>', methods=['GET'])
-@cached(timeout=60)
+@cached(timeout=5)
 def get_task_by_uuid(uuid):
     result = tasks.get_task_by_uuid(uuid)
     schema = task_schema.dump(result)
     return jsonify(make_public_url(schema, 'v1.get_task_by_uuid'))
+
+
+@v1_blueprint.route('/tasks/<uuid>/status', methods=['GET'])
+def get_task_status_by_task_uuid(uuid):
+    result = tasks.get_task_status_by_task_uuid(uuid)
+    schema = status_schema.dump(result)
+    return jsonify(schema)

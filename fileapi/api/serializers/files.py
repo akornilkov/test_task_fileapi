@@ -10,11 +10,11 @@ class FileSchema(ma.Schema):
     description = fields.String()
     started_at = fields.DateTime()
     finished_at = fields.DateTime()
-    loaded_from = fields.String()
+    loaded_from = fields.String(required=True)
     loaded_to = fields.String()
     task_id = fields.Integer()
 
 
 # init Schema
-task_schema = FileSchema()
-tasks_schema = FileSchema(many=True)
+file_schema = FileSchema()
+files_schema = FileSchema(many=True)

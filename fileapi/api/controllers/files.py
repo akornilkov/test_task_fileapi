@@ -3,9 +3,10 @@ from pprint import pprint
 
 from fileapi.api.models.files import FileModel
 
-from fileapi.app.db import get_objects, create_object, update_objects
+from fileapi.app.db import get_objects, create_object, update_objects, delete_objects
 from fileapi.app.ext.exceptions import DatabaseError
-
+from fileapi.api.serializers.files import file_schema,files_schema
+from fileapi.api.controllers import filemanager
 
 def get_files(filter_by: dict):
     return get_objects(FileModel, filter_by)
@@ -45,3 +46,21 @@ def create_file(file: dict):
 def update_file(file: dict, filter_by: dict = None):
     updated_file = update_objects(FileModel, filter_by, file)
     return updated_file
+
+
+def delete_file_from_db(file: dict):
+    return delete_objects(FileModel, file)
+
+
+def delete_files(filter_by: dict):
+    results = {}
+    files = get_files(filter_by=filter_by)
+    for file in files_schema.dump(files):
+        if filemanager.delete_file(file=file):
+            if delete_file_from_db(file=file) == 1:
+                results[file.get('name')] = 'OK'
+            else:
+                results[file.get('name')] = 'Cannot delete from DB'
+        else:
+            results[file.get('name')] = 'Cannot delete from STORAGE'
+    return results

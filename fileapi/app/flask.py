@@ -17,19 +17,23 @@ from .cache import cache
 from fileapi.api.models import *
 from fileapi.app.config import config
 from fileapi.api.tasks.celery import celeryApp
+from fileapi.api.controllers.filemanager import create_dir_if_not_exists
 
 
 def create_app(extra_config: dict = None):
     if config.INIT_LOGGING:
         logging.init_logging()
+    create_dir_if_not_exists(config.FILES_BASE_PATH)
+    create_dir_if_not_exists(config.UPLOAD_FOLDER)
     app = flask.Flask(config.APP_NAME)
     app.config.from_object(config)
-    app.config.update(CELERY_BROKER_URL='redis://localhost:6379/0', CELERY_RESULT_BACKEND='redis://localhost:6379/0')
+    app.config.update(CELERY_BROKER_URL='redis://localhost:6379/0')
     app.app_context().push()
     db.init_app(app)
     ma.init_app(app)
     celeryApp.init_app(app)
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+
     if extra_config:
         if extra_config.pop('migrate', False):
             db.drop_all()
@@ -49,7 +53,7 @@ def create_app(extra_config: dict = None):
 
 
 def create_statuses(raw: List[dict]):
-    statuses = [
+    for status in [
         StatusModel(
             uuid=uuid.uuid4(),
             name=item.get('name'),
@@ -57,6 +61,5 @@ def create_statuses(raw: List[dict]):
             description=item.get('description'),
         )
         for item in raw
-    ]
-    for status in statuses:
+    ]:
         yield status
