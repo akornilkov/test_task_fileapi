@@ -1,8 +1,8 @@
 FROM python:3.8
 
 RUN apt-get update && apt-get -y install netcat
-COPY . /opt/billing
-WORKDIR /opt/billing
+COPY . /opt/fileapi
+WORKDIR /opt/fileapi
 
 ##RUN pip install pipenv && pipenv install --system --deploy --ignore-pipfile
 RUN pip install -U setuptools pip pipenv \

@@ -1,12 +1,20 @@
 import uuid
+from enum import Enum
 from pprint import pprint
 
 from fileapi.api.models.files import FileModel
 
 from fileapi.app.db import get_objects, create_object, update_objects, delete_objects
 from fileapi.app.ext.exceptions import DatabaseError
-from fileapi.api.serializers.files import file_schema,files_schema
+from fileapi.api.serializers.files import files_schema
 from fileapi.api.controllers import filemanager
+
+
+class ResultsEnum(Enum):
+    SUSCCESS = 'OK'
+    NOT_DELETED_FROM_DB = 'Cannot delete from DB'
+    NOT_DELETED_FROM_STORAGE = 'Cannot delete from STORAGE'
+
 
 def get_files(filter_by: dict):
     return get_objects(FileModel, filter_by)
@@ -58,9 +66,9 @@ def delete_files(filter_by: dict):
     for file in files_schema.dump(files):
         if filemanager.delete_file(file=file):
             if delete_file_from_db(file=file) == 1:
-                results[file.get('name')] = 'OK'
+                results[file.get('name')] = ResultsEnum.SUSCCESS.value
             else:
-                results[file.get('name')] = 'Cannot delete from DB'
+                results[file.get('name')] = ResultsEnum.NOT_DELETED_FROM_DB.value
         else:
-            results[file.get('name')] = 'Cannot delete from STORAGE'
+            results[file.get('name')] = ResultsEnum.NOT_DELETED_FROM_STORAGE.value
     return results

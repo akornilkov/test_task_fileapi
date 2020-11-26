@@ -17,14 +17,11 @@ from .cache import cache
 from fileapi.api.models import *
 from fileapi.app.config import config
 from fileapi.api.tasks.celery import celeryApp
-from fileapi.api.controllers.filemanager import create_dir_if_not_exists
 
 
 def create_app(extra_config: dict = None):
     if config.INIT_LOGGING:
         logging.init_logging()
-    create_dir_if_not_exists(config.FILES_BASE_PATH)
-    create_dir_if_not_exists(config.UPLOAD_FOLDER)
     app = flask.Flask(config.APP_NAME)
     app.config.from_object(config)
     app.config.update(CELERY_BROKER_URL='redis://localhost:6379/0')

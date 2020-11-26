@@ -1,3 +1,3 @@
 from fileapi.app.flask import create_app
 
-app = create_app({'migrate': False})
+app = create_app({'migrate': True})

@@ -55,3 +55,10 @@ $ docker-compose up
 export ENVIRONMENT=testing
 $ python -m pytest -vvs
 ```
+
+#TODO
+
+1. Тесты
+2. Docker
+3. CI/CD
+4. Flake8

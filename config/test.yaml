@@ -1,0 +1,27 @@
+APP_NAME: FILEAPI
+LOG_LEVEL: DEBUG
+INIT_LOGGING: true
+
+DB_PG_HOST: localhost
+DB_PG_PORT: 5432
+DB_PG_USERNAME: postgres
+DB_PG_NAME: fileapi
+DB_SCHEMA: public
+DB_PG_PASSWORD: postgres
+
+TASK_MAX_RETRIES: 5
+TASK_DELAY: 10
+
+CELERY_BROKER_URL: redis://localhost:6379/0
+
+FILES_BASE_PATH: ./static/
+UPLOAD_TO: uploads/
+ALLOWED_EXTENSIONS:
+  - txt
+  - pdf
+  - png
+  - jpg
+  - jpeg
+  - gif
+
+FILE_CHUNKS_COUNT: 10
